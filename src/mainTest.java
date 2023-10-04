@@ -1,4 +1,5 @@
 import org.junit.Test;
+///test git
 public class mainTest extends mathHelper {
     mathHelper math = new mathHelper();
     @Test
