@@ -1,6 +1,6 @@
-
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import java.net.URL;
 
@@ -90,6 +91,47 @@ public class FirstTest {
                 By.id("org.wikipedia:id/search_close_btn"),
                 "close cross is presented",
                 10
+        );
+    }
+
+    @Test
+    public void testCompirArticleTitle() {
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Skip']"),
+                "can't skip welcome screen"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "search bar is not founded",
+                5
+        );
+
+        waitForElementAndSend(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "Java",
+                "can't find search bar or can't send query"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
+                "There is no searched text is server answer",
+                15
+        );
+
+        WebElement title = waitForElementPresents(
+                By.xpath("//android.view.View[@content-desc='Java (programming language)']"),
+                "Can't find article title",
+                15
+        );
+
+        String article = title. getAttribute("class");
+
+        Assert.assertEquals(
+                "this is not expected title",
+                "Java (programming language)",
+                article
         );
 
     }
