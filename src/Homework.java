@@ -11,13 +11,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.sql.Time;
 
 public class Homework {
 
         private AndroidDriver driver;
 
         @Before
-        public void setUp() throws Exception{
+        public void setUp(){
             DesiredCapabilities capabilities = new DesiredCapabilities();
 
             capabilities.setCapability("platformName", "Android");
@@ -53,6 +54,44 @@ public class Homework {
             assertElementHasText(By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@class = 'android.widget.TextView']"), "Search Wikipedia", "Text of element is unexpected");
         }
 
+        @Test
+        public void canceledSearch () throws InterruptedException {
+
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                    "can't skip welcome screen"
+            );
+
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/search_container"),
+                    "search bar is not founded"
+            );
+
+            waitForElementAndSend(
+                    By.id("org.wikipedia:id/search_src_text"),
+                    "Java",
+                    "can't find search bar or can't send query"
+            );
+
+            waitForElementPresents(
+                    By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']//*[@class='android.view.ViewGroup']"),
+                    "There are no current results for this query",
+                    15);
+
+
+            waitForElementAndClear(
+                    By.id("org.wikipedia:id/search_src_text"),
+                    "field for clear is not founded",
+                    15
+            );
+
+            WaitForElementNotPresent(
+                    By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']//*[@class='android.view.ViewGroup']"),
+                    "clearing 'search' field didn't work",
+                    15
+            );
+        }
+
 
 
         private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
@@ -69,6 +108,18 @@ public class Homework {
             return element;
         }
 
+        private WebElement waitForElementAndSend(By by, String message, String errorMessage){
+            WebElement element = waitForElementPresents(by, errorMessage, 5);
+            element.sendKeys(message);
+            return element;
+        }
+
+        private WebElement waitForElementAndClick(By by, String errorMessage){
+            WebElement element = waitForElementPresents(by, errorMessage, 5);
+            element.click();
+            return element;
+        }
+
         private void assertElementHasText(By by, String text, String errorMessage){
             WebElement element = waitForElementPresents(by, errorMessage, 15);
             Assert.assertEquals(
@@ -76,5 +127,19 @@ public class Homework {
                     text,
                     element.getText()
             );
+        }
+
+        private boolean WaitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
+            WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+            wait.withMessage(errorMessage + "\n");
+            return wait.until(
+                    ExpectedConditions.invisibilityOfElementLocated(by)
+            );
+        }
+
+        private WebElement waitForElementAndClear(By by, String errorMessage, long timeOutInSeconds) {
+            WebElement element = waitForElementPresents(by, errorMessage, 15);
+            element.clear();
+            return element;
         }
 }
