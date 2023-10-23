@@ -126,17 +126,13 @@ public class FirstTest {
                 15
         );
 
+        String article = title_element.getText();
 
-
-        String article = title_element.getAttribute("package");
-
-        System.out.println(article);
-
-//        Assert.assertEquals(
-//                "this is not expected title",
-//                "Java (programming language)",
-//                article
-//        );
+        Assert.assertEquals(
+                "this is not expected title",
+                "Java (programming language)",
+                article
+        );
 
     }
 
@@ -171,19 +167,6 @@ public class FirstTest {
         WebElement element = waitForElementPresents(by, errorMessage, 5);
         element.sendKeys(message);
         return element;
-    }
-
-    private WebElement waitForElementPresentsById(String id, String errorMessage, long timeOutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
-        wait.withMessage(errorMessage + "\n");
-        By by = By.id(id);
-        return wait.until(
-                ExpectedConditions.presenceOfElementLocated(by)
-        );
-    }
-
-    private WebElement waitForElementPresentsById(String id, String errorMessage) {
-        return waitForElementPresentsById(id, errorMessage,5);
     }
 
     private boolean WaitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
