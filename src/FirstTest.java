@@ -82,9 +82,15 @@ public class FirstTest {
                 "can't find search bar or can't send query"
         );
 
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Can't find 'cancel search' cross"
+//        waitForElementAndClick(
+//                By.id("org.wikipedia:id/search_close_btn"),
+//                "Can't find 'cancel search' cross"
+//        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "field for clear does not present",
+                15
         );
 
         WaitForElementNotPresent(
@@ -175,6 +181,12 @@ public class FirstTest {
         return wait.until(
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
+    }
+
+    private WebElement waitForElementAndClear(By by, String errorMessage, long timeOutInSeconds) {
+        WebElement element = waitForElementPresents(by, errorMessage, 15);
+        element.clear();
+        return element;
     }
 
 
