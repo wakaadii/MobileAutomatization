@@ -10,6 +10,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Time;
 
@@ -18,7 +19,7 @@ public class Homework {
         private AndroidDriver driver;
 
         @Before
-        public void setUp(){
+        public void setUp() throws Exception {
             DesiredCapabilities capabilities = new DesiredCapabilities();
 
             capabilities.setCapability("platformName", "Android");
@@ -91,6 +92,49 @@ public class Homework {
                     15
             );
         }
+        @Test
+        public void checkWord() {
+
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
+                    "can't skip welcome screen"
+            );
+
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/search_container"),
+                    "search bar is not founded"
+            );
+
+            waitForElementAndSend(
+                    By.id("org.wikipedia:id/search_src_text"),
+                    "Java",
+                    "can't find search bar or can't send query"
+            );
+
+            assertElementContainText(
+            By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 1]/android.widget.TextView[@index = 0]"),
+                    "Java",
+                    "there is no java in text of 1st element"
+            );
+
+            assertElementContainText(
+                    By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 2]/android.widget.TextView[@index = 0]"),
+                    "Java",
+                    "there is no java in text of 2nd element"
+            );
+
+            assertElementContainText(
+            By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 3]/android.widget.TextView[@index = 0]"),
+                    "Java",
+                    "there is no java in text of 3rd element"
+            );
+
+            assertElementContainText(
+                    By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 4]/android.widget.TextView[@index = 0]"),
+                    "Java",
+                    "there is no java in text of 4th element"
+            );
+        }
 
 
 
@@ -127,6 +171,15 @@ public class Homework {
                     text,
                     element.getText()
             );
+        }
+
+        private void assertElementContainText(By by, String text, String errorMessage) {
+            WebElement element = waitForElementPresents(
+                    by,
+                    errorMessage,
+                    10
+            );
+            Assert.assertTrue(element.getText().contains(text));
         }
 
         private boolean WaitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
