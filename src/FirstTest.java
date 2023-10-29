@@ -349,7 +349,10 @@ public class FirstTest {
         }
     }
     protected void swipeElementLeft(By by, String errorMessage) {
-        WebElement element = waitForElementPresents(by, errorMessage, 10);
+        WebElement element = waitForElementPresents(
+                by,
+                errorMessage,
+                10);
         int leftX = element.getLocation().getX();
         int rightX = leftX + element.getSize().getWidth();
         System.out.println(leftX + " " + rightX);
@@ -363,6 +366,7 @@ public class FirstTest {
                 .press(rightX, middleY)
                 .waitAction(300)
                 .moveTo(leftX, middleY)
+                .release()
                 .perform();
     }
 
