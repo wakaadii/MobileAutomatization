@@ -112,6 +112,12 @@ public class Homework {
                     "can't find search bar or can't send query"
             );
 
+            WebElement lastElementOnScreen = waitForElementPresents(
+                    By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[last()]"),
+                    "There is no elements for searching",
+                    10
+            );
+
             assertElementContainText(
                     By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 1]/android.widget.TextView[@index = 0]"),
                     "Java",
