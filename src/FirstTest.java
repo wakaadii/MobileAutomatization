@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 import java.net.URL;
-import java.util.Date;
+import java.util.List;
 
 public class FirstTest {
     private AndroidDriver driver;
@@ -104,7 +104,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCompirArticleTitle() {
+    public void testCompireArticleTitle() {
 
         waitForElementAndClick(
                 By.xpath("//*[@text='Skip']"),
@@ -268,6 +268,45 @@ public class FirstTest {
                 "marked page is in the list",
                 15
         );
+    }
+
+    @Test
+    public void testAmounOfNotEmptySearch() {
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Skip']"),
+                "can't skip welcome screen"
+        );
+
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "search bar is not founded",
+                5
+        );
+
+        String searchLine = "Linkin park discography";
+
+        waitForElementAndSend(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                searchLine,
+                "can't find search bar or can't send query"
+        );
+
+        String searchResultLocator = "//*   [@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@index = 0]";
+        waitForElementPresents(
+                By.xpath(searchResultLocator),
+                "there is no search results by " + searchResultLocator
+        );
+
+        int amountOfSearchedElements = getAmountOfElements(
+                By.xpath(searchResultLocator)
+        );
+
+        Assert.assertTrue(
+                "too few results for searhed string",
+                amountOfSearchedElements > 0
+        );
 
     }
 
@@ -368,6 +407,12 @@ public class FirstTest {
                 .moveTo(leftX + 10, middleY)
                 .release()
                 .perform();
+    }
+
+    private int getAmountOfElements(By by)
+    {
+        List elements = driver.findElements(by);
+        return elements.size();
     }
 
 }
