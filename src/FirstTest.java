@@ -363,9 +363,9 @@ public class FirstTest {
 
         TouchAction action = new TouchAction(driver);
         action
-                .press(rightX, middleY)
+                .press(rightX - 10, middleY)
                 .waitAction(300)
-                .moveTo(leftX, middleY)
+                .moveTo(leftX + 10, middleY)
                 .release()
                 .perform();
     }
