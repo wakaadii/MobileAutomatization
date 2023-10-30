@@ -1,3 +1,4 @@
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Assert;
@@ -143,63 +144,220 @@ public class Homework {
             );
         }
 
+    @Test
+    public void saveAndDeleteBookmarks (){
+
+            String textFirstSasvedPage = "Java (programming language)";
+            String textSecondSavedPage = "JavaScript";
+            String nameOfList = "programming languages";
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Skip']"),
+                "can't skip welcome screen"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "search bar is not founded",
+                5
+        );
+
+        waitForElementAndSend(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "Java",
+                "can't find search bar or can't send query"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='" + textFirstSasvedPage + "']"),
+                "There is no searched text " + textFirstSasvedPage + " is server answer",
+                15
+        );
+
+        waitForElementPresents(
+                By.xpath("//*[@content-desc='"+ textFirstSasvedPage + "']"),
+                "Can't find article "+ textFirstSasvedPage + " title",
+                15
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Can't find 'save' button"
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/snackbar_action"),
+                "can't add to bookmarks",
+                10
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']"),
+                "can't find list's add");
+
+        waitForElementAndSend(
+                By.xpath("//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']"),
+                nameOfList,
+                "can't send name for list of bookmarks"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text = 'OK']"),
+                "can't create list of bookmarks"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "can't find <- arrow on first page"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='" + textSecondSavedPage + "']"),
+                "There is no searched text " + textSecondSavedPage + " is server answer",
+                15
+        );
+
+        waitForElementPresents(
+                By.xpath("//*[@content-desc='" + textSecondSavedPage + "']"),
+                "Can't find article " + textSecondSavedPage + " title",
+                15
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_save"),
+                "Can't find 'save' button"
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/snackbar_action"),
+                "can't add to bookmarks",
+                10
+        );
+
+        waitForElementAndClick(
+                By.xpath("//android.widget.TextView[@text = '" + nameOfList + "']"),
+                "can't find list of bookmarks"
+        );
 
 
-        private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
-            WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
-            wait.withMessage(errorMessage + "\n");
-            return wait.until(
-                    ExpectedConditions.presenceOfElementLocated(by)
-            );
-        }
 
-        private WebElement waitForElementAndClick(By by, String errorMessage, long timeOutInSeconds){
-            WebElement element = waitForElementPresents(by, errorMessage, timeOutInSeconds);
-            element.click();
-            return element;
-        }
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "can't find <- arrow on second page"
+        );
 
-        private WebElement waitForElementAndSend(By by, String message, String errorMessage){
-            WebElement element = waitForElementPresents(by, errorMessage, 5);
-            element.sendKeys(message);
-            return element;
-        }
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "can't find <- arrow on search"
+        );
 
-        private WebElement waitForElementAndClick(By by, String errorMessage){
-            WebElement element = waitForElementPresents(by, errorMessage, 5);
-            element.click();
-            return element;
-        }
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/nav_tab_reading_lists"),
+                "Can't find saved bookmarks button"
+        );
 
-        private void assertElementHasText(By by, String text, String errorMessage){
-            WebElement element = waitForElementPresents(by, errorMessage, 15);
-            Assert.assertEquals(
-                    errorMessage,
-                    text,
-                    element.getText()
-            );
-        }
+        waitForElementAndClick(
+                By.xpath("//android.view.ViewGroup[@index = 1]"),
+                "can't find bookmarks list"
+        );
 
-        private void assertElementContainText(By by, String text, String errorMessage) {
-            WebElement element = waitForElementPresents(
-                    by,
-                    errorMessage,
-                    10
-            );
-            Assert.assertTrue(element.getText().contains(text));
-        }
+        swipeElementLeft(
+                By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textFirstSasvedPage + "']"),
+                "can't find marked page"
+        );
 
-        private boolean WaitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
-            WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
-            wait.withMessage(errorMessage + "\n");
-            return wait.until(
-                    ExpectedConditions.invisibilityOfElementLocated(by)
-            );
-        }
+        WaitForElementNotPresent(
+                By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textFirstSasvedPage + "']"),
+                "Test can't delete page " + textFirstSasvedPage,
+                15
+        );
 
-        private WebElement waitForElementAndClear(By by, String errorMessage, long timeOutInSeconds) {
-            WebElement element = waitForElementPresents(by, errorMessage, 15);
-            element.clear();
-            return element;
-        }
+        waitForElementPresents(
+                By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textSecondSavedPage + "']"),
+                textSecondSavedPage + " is not in the list",
+                15
+        );
+    }
+
+
+
+    private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+        wait.withMessage(errorMessage + "\n");
+        return wait.until(
+                ExpectedConditions.presenceOfElementLocated(by)
+        );
+    }
+
+    private WebElement waitForElementAndClick(By by, String errorMessage, long timeOutInSeconds){
+        WebElement element = waitForElementPresents(by, errorMessage, timeOutInSeconds);
+        element.click();
+        return element;
+    }
+
+    private WebElement waitForElementAndSend(By by, String message, String errorMessage){
+        WebElement element = waitForElementPresents(by, errorMessage, 5);
+        element.sendKeys(message);
+        return element;
+    }
+
+    private WebElement waitForElementAndClick(By by, String errorMessage){
+        WebElement element = waitForElementPresents(by, errorMessage, 5);
+        element.click();
+        return element;
+    }
+
+    private void assertElementHasText(By by, String text, String errorMessage){
+        WebElement element = waitForElementPresents(by, errorMessage, 15);
+        Assert.assertEquals(
+                errorMessage,
+                text,
+                element.getText()
+        );
+    }
+
+    private void assertElementContainText(By by, String text, String errorMessage) {
+        WebElement element = waitForElementPresents(
+                by,
+                errorMessage,
+                10
+        );
+        Assert.assertTrue(element.getText().contains(text));
+    }
+
+    private boolean WaitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+        wait.withMessage(errorMessage + "\n");
+        return wait.until(
+                ExpectedConditions.invisibilityOfElementLocated(by)
+        );
+    }
+
+    private WebElement waitForElementAndClear(By by, String errorMessage, long timeOutInSeconds) {
+        WebElement element = waitForElementPresents(by, errorMessage, 15);
+        element.clear();
+        return element;
+    }
+
+    protected void swipeElementLeft(By by, String errorMessage) {
+        WebElement element = waitForElementPresents(
+                by,
+                errorMessage,
+                10);
+        int leftX = element.getLocation().getX();
+        int rightX = leftX + element.getSize().getWidth();
+        System.out.println(leftX + " " + rightX);
+        int upperY = element.getLocation().getY();
+        int lowerY = upperY + element.getSize().getHeight();
+        int middleY = (upperY + lowerY)/2;
+        System.out.println(upperY + " " + lowerY + " " + middleY);
+
+        TouchAction action = new TouchAction(driver);
+        action
+                .press(rightX - 10, middleY)
+                .waitAction(300)
+                .moveTo(leftX + 10, middleY)
+                .release()
+                .perform();
+    }
 }
