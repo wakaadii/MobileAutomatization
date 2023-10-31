@@ -339,7 +339,7 @@ public class FirstTest {
                 "there is no empty result label by request " + searchLine
         );
 
-        assertNoElementPresent(
+        assertNoSearchResults(
                 By.xpath(searchResultLocator),
                 By.xpath(emptyResultLabel),
                 "No results",
@@ -466,7 +466,7 @@ public class FirstTest {
         }
     }
 
-    private void assertNoElementPresent (By byResultLocator, By byGetText, String text, String errorMessage) {
+    private void assertNoSearchResults (By byResultLocator, By byGetText, String text, String errorMessage) {
         int amountOfElements = getAmountOfElements(byResultLocator);
         String textOfElement = driver.findElement(byGetText).getText();
         if (!textOfElement.equals(text) & (amountOfElements == 1)){
