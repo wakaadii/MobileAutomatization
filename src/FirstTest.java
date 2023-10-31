@@ -340,6 +340,7 @@ public class FirstTest {
         );
 
         assertElementNotPresent(
+                By.xpath(searchResultLocator),
                 By.xpath(emptyResultLabel),
                 "We've found some results by request " + searchLine,
                 emptyResultLabel
@@ -458,11 +459,11 @@ public class FirstTest {
         return elements.size();
     }
 
-    private void assertElementNotPresent (By by, String errorMessage, String emptyResultsMessage) {
-        int amountOfElements = getAmountOfElements(by);
-        WebElement element = waitForElementPresents(by, " element by Xpath " + by + "not found");
+    private void assertElementNotPresent (By byCountElements, By byTextOfElement, String errorMessage, String emptyResultsMessage) {
+        int amountOfElements = getAmountOfElements(byCountElements);
+        WebElement element = waitForElementPresents(byTextOfElement, " element by Xpath " + byTextOfElement + "not found");
         if ((amountOfElements > 1) + element.getText() != emptyResultsMessage) {
-            String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
+            String defaultMessage = "An element '" + byCountElements.toString() + "' supposed to be not present";
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
     }
