@@ -416,6 +416,43 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testSearchResultsInBackground () {
+        waitForElementAndClick(
+                By.xpath("//*[@text='Skip']"),
+                "can't skip welcome screen"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "search bar is not founded",
+                5
+        );
+
+        String searchLine = "Java";
+
+        waitForElementAndSend(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                searchLine,
+                "can't find search bar or can't send query"
+        );
+
+        waitForElementPresents(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
+                "Can't find text 'Object-oriented programming language' in searching by text '" + searchLine + "'",
+                15
+        );
+
+        driver.runAppInBackground(5);
+
+        waitForElementPresents(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
+                "Can't find article 'Object-oriented programming language' after background",
+                15
+        );
+    }
+
+
     private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(errorMessage + "\n");
