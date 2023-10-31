@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -32,6 +33,7 @@ public class Homework {
             capabilities.setCapability("app", "C:/programming/JavaAppiumAutomation/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
             driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+            driver.rotate(ScreenOrientation.PORTRAIT);
         }
 
         @After
@@ -144,140 +146,140 @@ public class Homework {
             );
         }
 
-    @Test
-    public void saveAndDeleteBookmarks (){
+        @Test
+        public void saveAndDeleteBookmarks (){
 
-            String textFirstSasvedPage = "Java (programming language)";
-            String textSecondSavedPage = "JavaScript";
-            String nameOfList = "programming languages";
+                String textFirstSasvedPage = "Java (programming language)";
+                String textSecondSavedPage = "JavaScript";
+                String nameOfList = "programming languages";
 
-        waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
+            waitForElementAndClick(
+                    By.xpath("//*[@text='Skip']"),
+                    "can't skip welcome screen"
+            );
 
-        waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
+            waitForElementAndClick(
+                    By.xpath("//*[@text='Search Wikipedia']"),
+                    "search bar is not founded",
+                    5
+            );
 
-        waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
+            waitForElementAndSend(
+                    By.xpath("//*[@text='Search Wikipedia']"),
+                    "Java",
+                    "can't find search bar or can't send query"
+            );
 
-        waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='" + textFirstSasvedPage + "']"),
-                "There is no searched text " + textFirstSasvedPage + " is server answer",
-                15
-        );
+            waitForElementAndClick(
+                    By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='" + textFirstSasvedPage + "']"),
+                    "There is no searched text " + textFirstSasvedPage + " is server answer",
+                    15
+            );
 
-        waitForElementPresents(
-                By.xpath("//*[@content-desc='"+ textFirstSasvedPage + "']"),
-                "Can't find article "+ textFirstSasvedPage + " title",
-                15
-        );
+            waitForElementPresents(
+                    By.xpath("//*[@content-desc='"+ textFirstSasvedPage + "']"),
+                    "Can't find article "+ textFirstSasvedPage + " title",
+                    15
+            );
 
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/page_save"),
-                "Can't find 'save' button"
-        );
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/page_save"),
+                    "Can't find 'save' button"
+            );
 
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/snackbar_action"),
-                "can't add to bookmarks",
-                10
-        );
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/snackbar_action"),
+                    "can't add to bookmarks",
+                    10
+            );
 
-        waitForElementAndClick(
-                By.xpath("//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']"),
-                "can't find list's add");
+            waitForElementAndClick(
+                    By.xpath("//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']"),
+                    "can't find list's add");
 
-        waitForElementAndSend(
-                By.xpath("//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']"),
-                nameOfList,
-                "can't send name for list of bookmarks"
-        );
+            waitForElementAndSend(
+                    By.xpath("//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']"),
+                    nameOfList,
+                    "can't send name for list of bookmarks"
+            );
 
-        waitForElementAndClick(
-                By.xpath("//*[@text = 'OK']"),
-                "can't create list of bookmarks"
-        );
+            waitForElementAndClick(
+                    By.xpath("//*[@text = 'OK']"),
+                    "can't create list of bookmarks"
+            );
 
-        waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "can't find <- arrow on first page"
-        );
+            waitForElementAndClick(
+                    By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                    "can't find <- arrow on first page"
+            );
 
-        waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='" + textSecondSavedPage + "']"),
-                "There is no searched text " + textSecondSavedPage + " is server answer",
-                15
-        );
+            waitForElementAndClick(
+                    By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='" + textSecondSavedPage + "']"),
+                    "There is no searched text " + textSecondSavedPage + " is server answer",
+                    15
+            );
 
-        waitForElementPresents(
-                By.xpath("//*[@content-desc='" + textSecondSavedPage + "']"),
-                "Can't find article " + textSecondSavedPage + " title",
-                15
-        );
+            waitForElementPresents(
+                    By.xpath("//*[@content-desc='" + textSecondSavedPage + "']"),
+                    "Can't find article " + textSecondSavedPage + " title",
+                    15
+            );
 
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/page_save"),
-                "Can't find 'save' button"
-        );
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/page_save"),
+                    "Can't find 'save' button"
+            );
 
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/snackbar_action"),
-                "can't add to bookmarks",
-                10
-        );
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/snackbar_action"),
+                    "can't add to bookmarks",
+                    10
+            );
 
-        waitForElementAndClick(
-                By.xpath("//android.widget.TextView[@text = '" + nameOfList + "']"),
-                "can't find list of bookmarks"
-        );
+            waitForElementAndClick(
+                    By.xpath("//android.widget.TextView[@text = '" + nameOfList + "']"),
+                    "can't find list of bookmarks"
+            );
 
 
 
-        waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "can't find <- arrow on second page"
-        );
+            waitForElementAndClick(
+                    By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                    "can't find <- arrow on second page"
+            );
 
-        waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "can't find <- arrow on search"
-        );
+            waitForElementAndClick(
+                    By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                    "can't find <- arrow on search"
+            );
 
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/nav_tab_reading_lists"),
-                "Can't find saved bookmarks button"
-        );
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/nav_tab_reading_lists"),
+                    "Can't find saved bookmarks button"
+            );
 
-        waitForElementAndClick(
-                By.xpath("//android.view.ViewGroup[@index = 1]"),
-                "can't find bookmarks list"
-        );
+            waitForElementAndClick(
+                    By.xpath("//android.view.ViewGroup[@index = 1]"),
+                    "can't find bookmarks list"
+            );
 
-        swipeElementLeft(
-                By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textFirstSasvedPage + "']"),
-                "can't find marked page"
-        );
+            swipeElementLeft(
+                    By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textFirstSasvedPage + "']"),
+                    "can't find marked page"
+            );
 
-        WaitForElementNotPresent(
-                By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textFirstSasvedPage + "']"),
-                "Test can't delete page " + textFirstSasvedPage,
-                15
-        );
+            WaitForElementNotPresent(
+                    By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textFirstSasvedPage + "']"),
+                    "Test can't delete page " + textFirstSasvedPage,
+                    15
+            );
 
-        waitForElementPresents(
-                By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textSecondSavedPage + "']"),
-                textSecondSavedPage + " is not in the list",
-                15
-        );
-    }
+            waitForElementPresents(
+                    By.xpath("//android.widget.TextView[@resource-id = 'org.wikipedia:id/page_list_item_title' and @text = '" + textSecondSavedPage + "']"),
+                    textSecondSavedPage + " is not in the list",
+                    15
+            );
+        }
 
 
 
