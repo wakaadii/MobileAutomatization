@@ -331,7 +331,7 @@ public class FirstTest {
                 "can't find search bar or can't send query"
         );
 
-        String searchResultLocator = "//*[@resource-id = 'org.wikipedia:id/results_text']/android.view.ViewGroup[@index = 0]";
+        String searchResultLocator = "//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup";
         String emptyResultLabel = "//android.widget.TextView[@resource-id = 'org.wikipedia:id/results_text']";
 
         waitForElementPresents(
@@ -339,12 +339,11 @@ public class FirstTest {
                 "there is no empty result label by request " + searchLine
         );
 
-        assertElementNotPresent(
+        assertNoElementPresent(
                 By.xpath(searchResultLocator),
                 By.xpath(emptyResultLabel),
-                "We've found some results by request " + searchLine,
-                emptyResultLabel
-        );
+                "No results",
+                "test_error");
 
 
     }
@@ -455,15 +454,23 @@ public class FirstTest {
     }
 
     private int getAmountOfElements(By by)    {
-        List elements = driver.findElements(by);
-        return elements.size();
+        List elementsCount = driver.findElements(by);
+        return elementsCount.size();
     }
 
-    private void assertElementNotPresent (By byCountElements, By byTextOfElement, String errorMessage, String emptyResultsMessage) {
-        int amountOfElements = getAmountOfElements(byCountElements);
-        WebElement element = waitForElementPresents(byTextOfElement, " element by Xpath " + byTextOfElement + "not found");
-        if ((amountOfElements > 1) + element.getText() != emptyResultsMessage) {
-            String defaultMessage = "An element '" + byCountElements.toString() + "' supposed to be not present";
+    private void assertElementNotPresent (By by, String errorMessage) {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements > 0) {
+            String defaultMessage = "An element '" + by.toString() + "supposed to not presented";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
+    }
+
+    private void assertNoElementPresent (By byResultLocator, By byGetText, String text, String errorMessage) {
+        int amountOfElements = getAmountOfElements(byResultLocator);
+        String textOfElement = driver.findElement(byGetText).getText();
+        if (!textOfElement.equals(text) & (amountOfElements == 1)){
+            String defaultMessage = "An element '" + byResultLocator.toString() + "supposed to not presented";
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
     }
