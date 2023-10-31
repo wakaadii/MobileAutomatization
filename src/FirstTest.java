@@ -293,7 +293,7 @@ public class FirstTest {
                 "can't find search bar or can't send query"
         );
 
-        String searchResultLocator = "//*   [@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@index = 0]";
+        String searchResultLocator = "//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@index = 0]";
         waitForElementPresents(
                 By.xpath(searchResultLocator),
                 "there is no search results by " + searchResultLocator
@@ -310,6 +310,45 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testAmounOfEmptySearch() {
+        waitForElementAndClick(
+                By.xpath("//*[@text='Skip']"),
+                "can't skip welcome screen"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "search bar is not founded",
+                5
+        );
+
+        String searchLine = "82drjv";
+
+        waitForElementAndSend(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                searchLine,
+                "can't find search bar or can't send query"
+        );
+
+        String searchResultLocator = "//*[@resource-id = 'org.wikipedia:id/results_text']/android.view.ViewGroup[@index = 0]";
+        String emptyResultLabel = "//android.widget.TextView[@resource-id = 'org.wikipedia:id/results_text']";
+
+        waitForElementPresents(
+                By.xpath(emptyResultLabel),
+                "there is no empty result label by request " + searchLine
+        );
+
+        assertElementNotPresent(
+                By.xpath(emptyResultLabel),
+                "We've found some results by request " + searchLine,
+                emptyResultLabel
+        );
+
+
+    }
+
+
     private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -317,9 +356,11 @@ public class FirstTest {
                 ExpectedConditions.presenceOfElementLocated(by)
         );
     }
+
     private WebElement waitForElementPresents(By by, String errorMessage) {
         return waitForElementPresents(by, errorMessage,5);
     }
+
     private WebElement waitForElementAndClick(By by, String errorMessage, long timeOutInSeconds){
         WebElement element = waitForElementPresents(by, errorMessage, timeOutInSeconds);
         element.click();
@@ -331,6 +372,7 @@ public class FirstTest {
         element.click();
         return element;
     }
+
     private WebElement waitForElementAndSend(By by, String message, String errorMessage, long timeOutInSeconds){
         WebElement element = waitForElementPresents(by, errorMessage, timeOutInSeconds);
         element.sendKeys(message);
@@ -371,6 +413,7 @@ public class FirstTest {
                 .release()
                 .perform();
     }
+
     protected void swipeUpQuick () {
         swipeUp(200);
     }
@@ -387,6 +430,7 @@ public class FirstTest {
             ++alreadySwiped;
         }
     }
+
     protected void swipeElementLeft(By by, String errorMessage) {
         WebElement element = waitForElementPresents(
                 by,
@@ -409,10 +453,18 @@ public class FirstTest {
                 .perform();
     }
 
-    private int getAmountOfElements(By by)
-    {
+    private int getAmountOfElements(By by)    {
         List elements = driver.findElements(by);
         return elements.size();
+    }
+
+    private void assertElementNotPresent (By by, String errorMessage, String emptyResultsMessage) {
+        int amountOfElements = getAmountOfElements(by);
+        WebElement element = waitForElementPresents(by, " element by Xpath " + by + "not found");
+        if ((amountOfElements > 1) + element.getText() != emptyResultsMessage) {
+            String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
     }
 
 }
