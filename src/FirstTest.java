@@ -278,7 +278,6 @@ public class FirstTest {
                 "can't skip welcome screen"
         );
 
-
         waitForElementAndClick(
                 By.xpath("//*[@text='Search Wikipedia']"),
                 "search bar is not founded",
@@ -348,6 +347,44 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testRotationOfScreenSearchResults() {
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Skip']"),
+                "can't skip welcome screen"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                "search bar is not founded",
+                5
+        );
+
+        String searchLine = "Java";
+
+        waitForElementAndSend(
+                By.xpath("//*[@text='Search Wikipedia']"),
+                searchLine,
+                "can't find search bar or can't send query"
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
+                "Can't find text 'Object-oriented programming language' in searching by text '" + searchLine + "'",
+                15
+        );
+
+        String titleBeforeRotating = waitForElementAndGetAttribute(
+                By.id("pcs-edit-section-title-description"),
+                "content-desc",
+                "subtitle is not founded",
+                15
+        );
+        System.out.println(titleBeforeRotating);
+
+
+    }
 
     private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
@@ -475,4 +512,8 @@ public class FirstTest {
         }
     }
 
+    private String waitForElementAndGetAttribute (By by, String attribute, String errorMessage, long timeoutInSeconds) {
+        WebElement element =waitForElementPresents(by,errorMessage,timeoutInSeconds);
+        return element.getAttribute(attribute);
+    }
 }
