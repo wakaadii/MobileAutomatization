@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -381,9 +382,38 @@ public class FirstTest {
                 "subtitle is not founded",
                 15
         );
+
         System.out.println(titleBeforeRotating);
 
+        driver.rotate(ScreenOrientation.LANDSCAPE);
 
+        String titleAfterRotating = waitForElementAndGetAttribute(
+                By.id("pcs-edit-section-title-description"),
+                "content-desc",
+                "subtitle is not founded",
+                15
+        );
+
+        Assert.assertEquals(
+                "Article subtitle have been changed after rotation",
+                titleBeforeRotating,
+                titleAfterRotating
+        );
+
+        driver.rotate(ScreenOrientation.PORTRAIT);
+
+        String titleAfterSecondRotating = waitForElementAndGetAttribute(
+                By.id("pcs-edit-section-title-description"),
+                "content-desc",
+                "subtitle is not founded",
+                15
+        );
+
+        Assert.assertEquals(
+                "Article subtitle have been changed after second rotation",
+                titleBeforeRotating,
+                titleAfterSecondRotating
+        );
     }
 
     private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
