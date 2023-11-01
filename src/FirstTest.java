@@ -1,5 +1,7 @@
 import lib.CoreTestCase;
 import lib.ui.MainPageObject;
+import lib.ui.WelcomeScreenPageObject;
+import lib.ui.SearchPageObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -17,51 +19,26 @@ public class FirstTest extends CoreTestCase {
     }
 
     @Test
-    public void tesrSearch() {
+    public void testSearch() {
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-                );
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
-                "There is no searched text is server answer",
-                15
-        );
-
-
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearhResult("Java (programming language)");
     }
 
     @Test
     public void testCancelSearch() {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
-                "can't skip welcome screen"
-        );
 
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "search bar is not founded"
-        );
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.waitForElementAndSend(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
 
         MainPageObject.waitForElementAndClick(
                 By.id("org.wikipedia:id/search_close_btn"),
@@ -84,22 +61,12 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testCompireArticleTitle() {
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
 
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
@@ -126,22 +93,12 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testSwipeArticle() {
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "Appium",
-                "can't find search bar or can't send query"
-        );
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
 
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Automation for Apps']"),
@@ -160,22 +117,13 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSaveAndDeleteBookmarks(){
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
 
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
@@ -250,24 +198,13 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testAmounOfNotEmptySearch() {
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
         String searchLine = "Linkin park discography";
 
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                searchLine,
-                "can't find search bar or can't send query"
-        );
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(searchLine);
 
         String searchResultLocator = "//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@index = 0]";
         MainPageObject.waitForElementPresents(
@@ -288,27 +225,18 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAmounOfEmptySearch() {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
         String searchLine = "82drjv";
-
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                searchLine,
-                "can't find search bar or can't send query"
-        );
-
         String searchResultLocator = "//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup";
         String emptyResultLabel = "//android.widget.TextView[@resource-id = 'org.wikipedia:id/results_text']";
+
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(searchLine);
+
+
 
         MainPageObject.waitForElementPresents(
                 By.xpath(emptyResultLabel),
@@ -327,24 +255,13 @@ public class FirstTest extends CoreTestCase {
     @Test
     public void testRotationOfScreenSearchResults() {
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
         String searchLine = "Java";
 
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                searchLine,
-                "can't find search bar or can't send query"
-        );
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(searchLine);
 
         MainPageObject.waitForElementAndClick(
                 By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
@@ -394,30 +311,15 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testSearchResultsInBackground () {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
 
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
         String searchLine = "Java";
 
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                searchLine,
-                "can't find search bar or can't send query"
-        );
-
-        MainPageObject.waitForElementPresents(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
-                "Can't find text 'Object-oriented programming language' in searching by text '" + searchLine + "'",
-                15
-        );
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(searchLine);
+        SearchPageObject.waitForSearhResult("Object-oriented programming language");
 
         driver.runAppInBackground(5);
 
