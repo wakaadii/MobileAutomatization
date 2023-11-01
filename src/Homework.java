@@ -18,7 +18,6 @@ public class Homework extends CoreTestCase {
         MainPageObject = new MainPageObject(driver);
     }
 
-
     @Test
     public void testComparisonTextOfElement() {
         MainPageObject.waitForElementAndClick(
@@ -59,7 +58,6 @@ public class Homework extends CoreTestCase {
                 By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']//*[@class='android.view.ViewGroup']"),
                 "There are no current results for this query",
                 15);
-
 
         MainPageObject.waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
@@ -219,8 +217,6 @@ public class Homework extends CoreTestCase {
                 "can't find list of bookmarks"
         );
 
-
-
         MainPageObject.waitForElementAndClick(
                 By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
                 "can't find <- arrow on second page"
@@ -259,63 +255,11 @@ public class Homework extends CoreTestCase {
         );
     }
 
-
-
     private WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(errorMessage + "\n");
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
         );
-    }
-
-
-
-    private WebElement waitForElementAndSend(By by, String message, String errorMessage){
-        WebElement element = waitForElementPresents(by, errorMessage, 5);
-        element.sendKeys(message);
-        return element;
-    }
-
-    private WebElement waitForElementAndClick(By by, String errorMessage){
-        WebElement element = waitForElementPresents(by, errorMessage, 5);
-        element.click();
-        return element;
-    }
-
-    private boolean WaitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
-        wait.withMessage(errorMessage + "\n");
-        return wait.until(
-                ExpectedConditions.invisibilityOfElementLocated(by)
-        );
-    }
-
-    private WebElement waitForElementAndClear(By by, String errorMessage, long timeOutInSeconds) {
-        WebElement element = waitForElementPresents(by, errorMessage, 15);
-        element.clear();
-        return element;
-    }
-
-    protected void swipeElementLeft(By by, String errorMessage) {
-        WebElement element = waitForElementPresents(
-                by,
-                errorMessage,
-                10);
-        int leftX = element.getLocation().getX();
-        int rightX = leftX + element.getSize().getWidth();
-        System.out.println(leftX + " " + rightX);
-        int upperY = element.getLocation().getY();
-        int lowerY = upperY + element.getSize().getHeight();
-        int middleY = (upperY + lowerY)/2;
-        System.out.println(upperY + " " + lowerY + " " + middleY);
-
-        TouchAction action = new TouchAction(driver);
-        action
-                .press(rightX - 10, middleY)
-                .waitAction(300)
-                .moveTo(leftX + 10, middleY)
-                .release()
-                .perform();
     }
 }
