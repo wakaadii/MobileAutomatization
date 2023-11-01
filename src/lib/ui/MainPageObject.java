@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
@@ -147,5 +148,23 @@ public class MainPageObject {
         WebElement element = waitForElementPresents(by, errorMessage, timeoutInSeconds);
         System.out.println(element.getAttribute(attribute));
         return element.getAttribute(attribute);
+    }
+
+    public void assertElementHasText(By by, String text, String errorMessage){
+        WebElement element = waitForElementPresents(by, errorMessage, 15);
+        Assert.assertEquals(
+                errorMessage,
+                text,
+                element.getText()
+        );
+    }
+
+    public void assertElementContainText(By by, String text, String errorMessage) {
+        WebElement element = waitForElementPresents(
+                by,
+                errorMessage,
+                10
+        );
+        Assert.assertTrue(element.getText().contains(text));
     }
 }

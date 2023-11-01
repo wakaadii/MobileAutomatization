@@ -1,16 +1,10 @@
-import io.appium.java_client.TouchAction;
 import lib.CoreTestCase;
 import lib.ui.MainPageObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.List;
 
 public class FirstTest extends CoreTestCase {
 
@@ -114,17 +108,16 @@ public class FirstTest extends CoreTestCase {
         );
 
         WebElement title_element = MainPageObject.waitForElementPresents(
-                By.xpath("//*[@content-desc='Object-oriented programming language']"),
+                By.id("pcs-edit-section-title-description"),
                 "Can't find article title",
                 15
         );
 
-        String article = title_element.getAttribute("content-desc");
- //     it's not working on junit 4.1.22 + selenium 3.4.0
+        String article = title_element.getAttribute("contentDescription");
 
         Assert.assertEquals(
                 "this is not expected title",
-                "Java (programming language)",
+                "Object-oriented programming language",
                 article
         );
 
