@@ -167,4 +167,8 @@ public class MainPageObject {
         );
         Assert.assertTrue(element.getText().contains(text));
     }
+
+    public void assertElementPresent (By by, String errorMessage) {
+
+    }
 }
