@@ -1,7 +1,5 @@
-import io.appium.java_client.TouchAction;
 import lib.CoreTestCase;
 import lib.ui.MainPageObject;
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
