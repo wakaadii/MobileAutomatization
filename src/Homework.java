@@ -16,6 +16,7 @@ public class Homework extends CoreTestCase {
         MainPageObject = new MainPageObject(driver);
     }
 
+
     @Test
     public void testComparisonTextOfElement() {
         MainPageObject.waitForElementAndClick(
