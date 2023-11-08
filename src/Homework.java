@@ -1,5 +1,8 @@
 import lib.CoreTestCase;
 import lib.ui.MainPageObject;
+import lib.ui.SearchPageObject;
+import lib.ui.WelcomeScreenPageObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -18,21 +21,17 @@ public class Homework extends CoreTestCase {
     public void testComparisonTextOfElement() {
 
         WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
         ScipWelcomeScreenPageObject.scipWelcomeScreen();
-
-        MainPageObject.waitForElementPresents(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@class = 'android.widget.TextView']"),
-                "Can't find article title",
-                15
-        );
-
-        MainPageObject.assertElementHasText(By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@class = 'android.widget.TextView']"), "Search Wikipedia", "Text of element is unexpected");
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearhResult("Java (programming language)");
     }
 
     //ex3
     @Test
-    public void testCanceledSearch() throws InterruptedException {
+    public void testCanceledSearch() {
 
         WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
@@ -216,148 +215,27 @@ public class Homework extends CoreTestCase {
 
     //ex6
     @Test
-    public void testComparisonTextOfElement() {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen",
-                10
-        );
+    public void testAssertElementPresent() throws InterruptedException {
 
-        MainPageObject.waitForElementPresents(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@class = 'android.widget.TextView']"),
-                "Can't find article title",
-                15
-        );
+        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
-        MainPageObject.assertElementHasText(By.xpath("//*[@resource-id='org.wikipedia:id/search_container']//*[@class = 'android.widget.TextView']"), "Search Wikipedia", "Text of element is unexpected");
-    }
-
-    @Test
-    public void testCanceledSearch() throws InterruptedException {
-
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
-                "can't skip welcome screen"
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "search bar is not founded"
-        );
-
-        MainPageObject.waitForElementAndSend(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
-
-        MainPageObject.waitForElementPresents(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']//*[@class='android.view.ViewGroup']"),
-                "There are no current results for this query",
+        ScipWelcomeScreenPageObject.scipWelcomeScreen();
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.waitForSearhResult("Java (programming language)");
+        MainPageObject.waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='Object-oriented programming language']"),
+                "There is no searched text is server answer",
                 15);
 
-        MainPageObject.waitForElementAndClear(
-                By.id("org.wikipedia:id/search_src_text"),
-                "field for clear is not founded",
-                15
-        );
-
-        MainPageObject.WaitForElementNotPresent(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']//*[@class='android.view.ViewGroup']"),
-                "clearing 'search' field didn't work",
-                15
-        );
+        assertElementPresent(By.xpath("//android.view.View[@resource-id = 'pcs']/android.view.View[@index = 0]")
+                //, "title of this page is not presented"
+                );
     }
 
-    @Test
-    public void testCheckWord() {
-
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/fragment_onboarding_skip_button"),
-                "can't skip welcome screen"
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "search bar is not founded"
-        );
-
-        MainPageObject.waitForElementAndSend(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
-
-        WebElement lastElementOnScreen = MainPageObject.waitForElementPresents(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[last()]"),
-                "There is no elements for searching",
-                10
-        );
-
-        MainPageObject.assertElementContainText(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 1]/android.widget.TextView[@index = 0]"),
-                "Java",
-                "there is no java in text of 1st element"
-        );
-
-        MainPageObject.assertElementContainText(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 2]/android.widget.TextView[@index = 0]"),
-                "Java",
-                "there is no java in text of 2nd element"
-        );
-
-        MainPageObject.assertElementContainText(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 3]/android.widget.TextView[@index = 0]"),
-                "Java",
-                "there is no java in text of 3rd element"
-        );
-
-        MainPageObject.assertElementContainText(
-                By.xpath("//*[@resource-id = 'org.wikipedia:id/search_results_list']/android.view.ViewGroup[@instance = 4]/android.widget.TextView[@index = 0]"),
-                "Java",
-                "there is no java in text of 4th element"
-        );
+    public void assertElementPresent(By by) {
+        Assert.assertTrue(driver.findElement(by).isDisplayed());
     }
 
-    @Test
-    public void testSaveAndDeleteBookmarks(){
-
-            String textFirstSasvedPage = "Java (programming language)";
-            String textSecondSavedPage = "JavaScript";
-            String nameOfList = "programming languages";
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Skip']"),
-                "can't skip welcome screen"
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "search bar is not founded",
-                5
-        );
-
-        MainPageObject.waitForElementAndSend(
-                By.xpath("//*[@text='Search Wikipedia']"),
-                "Java",
-                "can't find search bar or can't send query"
-        );
-
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='" + textFirstSasvedPage + "']"),
-                "There is no searched text " + textFirstSasvedPage + " is server answer",
-                15
-        );
-
-        MainPageObject.waitForElementPresents(
-                By.xpath("//*[@content-desc='"+ textFirstSasvedPage + "']"),
-                "Can't find article "+ textFirstSasvedPage + " title",
-                15
-        );
-
-
-
-
-    }
 }
 
