@@ -13,7 +13,8 @@ public class ArticlePageObject extends MainPageObject{
         ADD_TO_LIST_BUTTON_ID = "org.wikipedia:id/snackbar_action",
         NAME_OF_BOOKMARKS_LIST_XPATH = "//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']",
         CLOSE_BOOKMARKS_POPUP_BUTTON_XPATH = "//*[@text = 'OK']",
-        CLOSE_ARTICLE_BUTTON_XPATH = "//android.widget.ImageButton[@content-desc='Navigate up']";
+        CLOSE_ARTICLE_BUTTON_XPATH = "//android.widget.ImageButton[@content-desc='Navigate up']",
+        SAVED_LISTS_OF_BOOKMARKS_ID = "org.wikipedia:id/nav_tab_reading_lists";
 
     public ArticlePageObject(AppiumDriver driver) { super(driver); }
 
@@ -62,6 +63,13 @@ public class ArticlePageObject extends MainPageObject{
         this.waitForElementAndClick(
                 By.xpath(CLOSE_ARTICLE_BUTTON_XPATH),
                 "can't find <- arrow on page"
+        );
+    }
+
+    public void openSavedLists () {
+        this.waitForElementAndClick(
+                By.id(SAVED_LISTS_OF_BOOKMARKS_ID),
+                "Can't find saved bookmarks button"
         );
     }
 }

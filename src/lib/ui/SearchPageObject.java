@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 
 public class SearchPageObject extends MainPageObject {
@@ -10,11 +11,16 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INPUT = "//*[@text='Search Wikipedia']",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_FIELD = "org.wikipedia:id/search_src_text",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='{SUBSTRING}']";
+            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='{SUBSTRING}']",
+            SEARCH_RESULT_LOCATOR_XPATH = "//*[@resource-id = 'org.wikipedia:id/search_results_list']/{SUBSTRING}";
 
     /* template methods*/
     private static String getResultSearchElement(String substring){
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+
+    private static String getSearchResultLocator(String substring){
+        return SEARCH_RESULT_LOCATOR_XPATH.replace("{SUBSTRING}", substring);
     }
     /* template methods*/
 
@@ -57,10 +63,25 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementAndClick(By.xpath(searchResultXpath), "can't click result with substring text'" + substring + "'");
     }
 
-//    public void searchClick(String pageName) {
-//
-//        this.waitForElementAndClick(By.xpath())
-//
-//    }
+    public int countNumberOfLines() {
+        String countElementsLocator = getSearchResultLocator( "android.view.ViewGroup");
+        this.waitForElementPresents(
+                By.xpath(countElementsLocator),
+                "incorrect search locator " + countElementsLocator
+        );
+        return getAmountOfElements(By.xpath(countElementsLocator));
+    }
 
+    public String getTextOfFirstLine() {
+        String textElement = getSearchResultLocator("android.view.ViewGroup[@index = 0]/android.widget.TextView");
+        return driver.findElement(By.xpath(textElement)).getText();
+    }
+
+    public void searchResultIsNotEmpty() {
+        Assert.assertTrue("too few results", ((countNumberOfLines() > 1) || !(getTextOfFirstLine().equals("No results"))));
+    }
+
+    public void searchResultIsEmpty() {
+        Assert.assertTrue("Some results are founded", ((countNumberOfLines() == 1) & getTextOfFirstLine().equals("No results")));
+    }
 }

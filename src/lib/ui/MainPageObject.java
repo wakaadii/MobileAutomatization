@@ -18,9 +18,6 @@ public class MainPageObject {
         this.driver = driver;
     }
 
-    private static final String
-            SAVED_LISTS_OF_BOOKMARKS_ID = "org.wikipedia:id/nav_tab_reading_lists";
-
     public WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -141,7 +138,7 @@ public class MainPageObject {
     public void assertNoSearchResults(By byResultLocator, By byGetText, String text, String errorMessage) {
         int amountOfElements = getAmountOfElements(byResultLocator);
         String textOfElement = driver.findElement(byGetText).getText();
-        if (!textOfElement.equals(text) & (amountOfElements == 1)){
+        if (!textOfElement.equals("No results") & (amountOfElements == 1)){
             String defaultMessage = "An element '" + byResultLocator.toString() + "supposed to not presented";
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
@@ -169,13 +166,6 @@ public class MainPageObject {
                 10
         );
         Assert.assertTrue(element.getText().contains(text));
-    }
-
-    public void openSavedLists () {
-        this.waitForElementAndClick(
-                By.id(SAVED_LISTS_OF_BOOKMARKS_ID),
-                "Can't find saved bookmarks button"
-        );
     }
 
 }
