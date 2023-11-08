@@ -34,4 +34,10 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementPresents(By.xpath(searchResultXpath), "There is no text '" + substring + "' in server answer");
     }
 
+//    public void searchClick(String pageName) {
+//
+//        this.waitForElementAndClick(By.xpath())
+//
+//    }
+
 }
