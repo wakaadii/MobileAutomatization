@@ -18,6 +18,9 @@ public class MainPageObject {
         this.driver = driver;
     }
 
+    private static final String
+            SAVED_LISTS_OF_BOOKMARKS_ID = "org.wikipedia:id/nav_tab_reading_lists";
+
     public WebElement waitForElementPresents(By by, String errorMessage, long timeOutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(errorMessage + "\n");
@@ -54,7 +57,7 @@ public class MainPageObject {
         return element;
     }
 
-    public boolean WaitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
+    public boolean waitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
         wait.withMessage(errorMessage + "\n");
         return wait.until(
@@ -98,6 +101,8 @@ public class MainPageObject {
             swipeUpQuick();
             ++alreadySwiped;
         }
+        swipeUpQuick();
+
     }
 
     public void swipeElementLeft(By by, String errorMessage) {
@@ -107,11 +112,9 @@ public class MainPageObject {
                 10);
         int leftX = element.getLocation().getX();
         int rightX = leftX + element.getSize().getWidth();
-        System.out.println(leftX + " " + rightX);
         int upperY = element.getLocation().getY();
         int lowerY = upperY + element.getSize().getHeight();
         int middleY = (upperY + lowerY)/2;
-        System.out.println(upperY + " " + lowerY + " " + middleY);
 
         TouchAction action = new TouchAction(driver);
         action
@@ -168,7 +171,11 @@ public class MainPageObject {
         Assert.assertTrue(element.getText().contains(text));
     }
 
-    public void assertElementPresent (By by, String errorMessage) {
-
+    public void openSavedLists () {
+        this.waitForElementAndClick(
+                By.id(SAVED_LISTS_OF_BOOKMARKS_ID),
+                "Can't find saved bookmarks button"
+        );
     }
+
 }
