@@ -6,7 +6,7 @@ import lib.ui.SearchPageObject;
 import lib.ui.WelcomeScreenPageObject;
 import org.junit.Test;
 
-public class TestsAppCondition extends CoreTestCase {
+public class AppConditionTests extends CoreTestCase {
     @Test
     public void testRotationOfScreenSearchResults() {
 

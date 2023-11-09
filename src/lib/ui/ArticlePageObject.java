@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -14,13 +15,15 @@ public class ArticlePageObject extends MainPageObject{
         NAME_OF_BOOKMARKS_LIST_XPATH = "//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']",
         CLOSE_BOOKMARKS_POPUP_BUTTON_XPATH = "//*[@text = 'OK']",
         CLOSE_ARTICLE_BUTTON_XPATH = "//android.widget.ImageButton[@content-desc='Navigate up']",
-        SAVED_LISTS_OF_BOOKMARKS_ID = "org.wikipedia:id/nav_tab_reading_lists";
+        SAVED_LISTS_OF_BOOKMARKS_ID = "org.wikipedia:id/nav_tab_reading_lists",
+        NAME_OF_BOOKMARKS_LIST_XPATH_TPL = "//android.widget.TextView[@text = '{TEXT}']";
 
     public ArticlePageObject(AppiumDriver driver) { super(driver); }
 
     public WebElement waitForTitleElement() {
         return this.waitForElementPresents(By.id(TITLIE_ID), "Can't find article title");
     }
+
     public String getArticleTitle () {
         WebElement title_element = waitForTitleElement();
         return title_element.getAttribute("contentDescription");
@@ -30,7 +33,7 @@ public class ArticlePageObject extends MainPageObject{
         this.swipeUpToElement(By.xpath(FOOTER_ELEMENT_XPATH), "can't find the end of article", 30);
     }
 
-    public void addArticleToList(String nameOfFolder) {
+    public void addArticleToNewList(String nameOfFolder) {
 
         this.waitForElementAndClick(
                 By.id(SAVE_BUTTON_ID),
@@ -59,6 +62,31 @@ public class ArticlePageObject extends MainPageObject{
         );
     }
 
+
+    private static String getNameOfBookmarksListXpathByName (String folderName) {
+        return NAME_OF_BOOKMARKS_LIST_XPATH_TPL.replace("{TEXT}", folderName);
+    }
+
+    public void addArticleToList(String folderName) {
+        String folderXpath = getNameOfBookmarksListXpathByName(folderName);
+
+        this.waitForElementAndClick(
+                By.id(SAVE_BUTTON_ID),
+                "Can't find 'save' button"
+        );
+
+        this.waitForElementAndClick(
+                By.id(ADD_TO_LIST_BUTTON_ID),
+                "can't add to bookmarks",
+                10
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(folderXpath),
+                "can't find list's add");
+
+    }
+
     public void closePage() {
         this.waitForElementAndClick(
                 By.xpath(CLOSE_ARTICLE_BUTTON_XPATH),
@@ -72,4 +100,9 @@ public class ArticlePageObject extends MainPageObject{
                 "Can't find saved bookmarks button"
         );
     }
+
+    public void assertElementPresent() {
+        Assert.assertTrue(driver.findElement(By.id(TITLIE_ID)).isDisplayed());
+    }
+
 }

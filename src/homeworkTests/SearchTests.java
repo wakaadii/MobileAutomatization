@@ -1,4 +1,4 @@
-package tests;
+package homeworkTests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
@@ -6,8 +6,9 @@ import lib.ui.WelcomeScreenPageObject;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
+    //ex2
     @Test
-    public void testSearch() {
+    public void testComparisonTextOfElement() {
 
         WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
@@ -18,45 +19,39 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.waitForSearchResult("Java (programming language)");
     }
 
+    //ex3
     @Test
-    public void testCancelSearch() {
+    public void testCanceledSearch() {
 
         WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForCancelButtonToAppear();
-        SearchPageObject.clickCancelSearch();
-//        Use for manual clearing field
-//        SearchPageObject.clearSearchField();
-        SearchPageObject.waitForCancelButtonToDisappear();
-    }
-
-    @Test
-    public void testAmounOfNotEmptySearch() {
-
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        String searchLine = "Linkin park discography";
+        String searchLine = "Java";
 
         ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.searchResultIsNotEmpty();
+        SearchPageObject.clearSearchField();
+        SearchPageObject.searchResultIsEmpty();
     }
-
+    //ex4
     @Test
-    public void testAmounOfEmptySearch() {
+    public void testCheckWord() {
 
         WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        String searchLine = "82drjv";
+        String searchLine = "Java";
 
         ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
-        SearchPageObject.noSearchResult();
+        SearchPageObject.waitForSearchResult("Object-oriented programming language");
+        int counter = SearchPageObject.countNumberOfLines();
+
+        for (int i = 0; i < counter; i++ ) {
+            assertTrue(
+                    "there is no java in text of " + i + " element",
+                    SearchPageObject.getTextOfLine(i).contains(searchLine));
+        }
     }
 }

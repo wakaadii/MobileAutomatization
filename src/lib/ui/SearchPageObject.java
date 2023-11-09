@@ -12,7 +12,8 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_FIELD = "org.wikipedia:id/search_src_text",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='{SUBSTRING}']",
-            SEARCH_RESULT_LOCATOR_XPATH = "//*[@resource-id = 'org.wikipedia:id/search_results_list']/{SUBSTRING}";
+            SEARCH_RESULT_LOCATOR_XPATH = "//*[@resource-id = 'org.wikipedia:id/search_results_list']/{SUBSTRING}",
+            SEARCH_RESULTS_LIST_ID = "//*[@resource-id = 'org.wikipedia:id/search_results_list']//*[@class='android.view.ViewGroup']";
 
     /* template methods*/
     private static String getResultSearchElement(String substring){
@@ -37,7 +38,7 @@ public class SearchPageObject extends MainPageObject {
         this.waitForElementAndSend(By.xpath(SEARCH_INPUT), searchLine, "Can't find and type into search input");
     }
 
-    public void waitForSearhResult(String substring) {
+    public void waitForSearchResult(String substring) {
         String searchResultXpath = getResultSearchElement(substring);
         this.waitForElementPresents(By.xpath(searchResultXpath), "There is no text '" + substring + "' in server answer");
     }
@@ -72,16 +73,21 @@ public class SearchPageObject extends MainPageObject {
         return getAmountOfElements(By.xpath(countElementsLocator));
     }
 
-    public String getTextOfFirstLine() {
-        String textElement = getSearchResultLocator("android.view.ViewGroup[@index = 0]/android.widget.TextView");
+    public String getTextOfLine(int index) {
+        String textElement = getSearchResultLocator("android.view.ViewGroup[@index = " + index + "]/android.widget.TextView");
         return driver.findElement(By.xpath(textElement)).getText();
     }
 
     public void searchResultIsNotEmpty() {
-        Assert.assertTrue("too few results", ((countNumberOfLines() > 1) || !(getTextOfFirstLine().equals("No results"))));
+        Assert.assertTrue("too few results", ((countNumberOfLines() > 1) || !(getTextOfLine(0).equals("No results"))));
     }
 
-    public void searchResultIsEmpty() {
-        Assert.assertTrue("Some results are founded", ((countNumberOfLines() == 1) & getTextOfFirstLine().equals("No results")));
+    public void noSearchResult() {
+        Assert.assertTrue("Some results are founded", ((countNumberOfLines() == 1) & getTextOfLine(0).equals("No results")));
     }
+    public void searchResultIsEmpty() {
+        waitForElementNotPresent(By.xpath(SEARCH_RESULTS_LIST_ID), "Element is presented", 15);
+    }
+
+
 }
