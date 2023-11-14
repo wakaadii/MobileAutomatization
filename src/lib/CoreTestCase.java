@@ -6,12 +6,13 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
+import java.time.Duration;
 //        capabilities.setCapability("app", "C:/programming/JavaAppiumAutomation/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
 public class CoreTestCase extends TestCase {
 
     protected AndroidDriver driver;
-    private static String appiumURL = "http://127.0.0.1:4723/wd/hub";
+    private static String appiumURL = "http://127.0.0.1:4723/";
 
     @Override
     protected void setUp() throws Exception{
@@ -20,13 +21,13 @@ public class CoreTestCase extends TestCase {
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
-        capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("deviceName", "amt");
-        capabilities.setCapability("platformVersion", "8.1");
-        capabilities.setCapability("automationName", "Appium");
-        capabilities.setCapability("appPackage", "org.wikipedia");
-        capabilities.setCapability("appActivity", ".main.MainActivity");
-        capabilities.setCapability("app", "/Users/shanti/IdeaProjects/MobileAutomatization/apks/org.wikipedia.apk");
+        capabilities.setCapability("appium:platformName", "Android");
+        capabilities.setCapability("appium:deviceName", "amt");
+        capabilities.setCapability("appium:platformVersion", "8.1");
+        capabilities.setCapability("automationName", "UiAutomator2");
+        capabilities.setCapability("appium:appPackage", "org.wikipedia");
+            capabilities.setCapability("appium:appActivity", ".main.MainActivity");
+        capabilities.setCapability("appium:app", "/Users/shanti/IdeaProjects/MobileAutomatization/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL(appiumURL), capabilities);
         this.rotateScreenPortrait();
@@ -49,6 +50,6 @@ public class CoreTestCase extends TestCase {
     }
 
     protected void moveToBackground(int seconds) {
-        driver.runAppInBackground(seconds);
+        driver.runAppInBackground(Duration.ofSeconds(seconds));
     }
 }
