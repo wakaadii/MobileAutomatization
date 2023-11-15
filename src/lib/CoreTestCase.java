@@ -53,9 +53,7 @@ public class CoreTestCase extends TestCase {
     }
 
     private DesiredCapabilities getCapabilitiesByPlatformEnv () throws Exception {
-//        String platform = System.getenv("PLATFORM");
-//        заглушка, потому что ни хрена не понятно, где ставить default environment variables
-        String platform = "android";
+        String platform = System.getenv("PLATFORM");
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
         if (platform.equals(PLATFORM_ANDROID)) {
@@ -80,9 +78,7 @@ public class CoreTestCase extends TestCase {
     }
 
     public AppiumDriver setDriverByPlatformEnv (DesiredCapabilities capabilities) throws Exception {
-//        String platform = System.getenv("PLATFORM");
-//        заглушка, потому что ни хрена не понятно, где ставить default environment variables
-        String platform = "android";
+        String platform = System.getenv("PLATFORM");
 
         AppiumDriver driver = new AppiumDriver(new URL(appiumURL), capabilities);
 
