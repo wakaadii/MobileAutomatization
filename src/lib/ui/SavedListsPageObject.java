@@ -48,7 +48,7 @@ public class SavedListsPageObject extends MainPageObject{
     public void deleteBookmarkFromList(String nameOfBookmark) {
         this.waitForArticleToAppearByTitle(nameOfBookmark);
         String xpath = getBookmarkXpath(nameOfBookmark);
-        this.swipeElementLeft(
+        this.swipeElementToLeft(
                 By.xpath(xpath),
                 "can't find marked page"
         );

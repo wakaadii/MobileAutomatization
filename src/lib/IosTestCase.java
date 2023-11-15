@@ -23,7 +23,8 @@ public class IosTestCase extends TestCase {
 
         capabilities.setCapability("platformName", "iOS");
         capabilities.setCapability("deviceName", "amt");
-        capabilities.setCapability("platformVersion", "17.0");
+        capabilities.setCapability("platformVersion", "14.1");
+        capabilities.setCapability("automationName", "XCUITest");
         capabilities.setCapability("app", "/Users/shanti/IdeaProjects/MobileAutomatization/apks/org.wikipedia.ios.app");
 
         driver = new IOSDriver(new URL(appiumURL), capabilities);
