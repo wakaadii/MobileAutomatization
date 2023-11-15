@@ -23,8 +23,5 @@ public class GetStartedTest extends IosTestCase {
         WelcomeScreenPageObject.clickGetStartedButtonIOS();
     }
 
-    @Test
-    public void testCheckEnv() {
-        System.out.println(System.getenv("PLATFORM"));
-    }
+
 }

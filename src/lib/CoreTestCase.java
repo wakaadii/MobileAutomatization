@@ -18,7 +18,7 @@ public class CoreTestCase extends TestCase {
             PLATFORM_ANDROID = "android";
 
 
-    protected AndroidDriver driver;
+    protected AppiumDriver driver;
     private static String appiumURL = "http://127.0.0.1:4723/";
 
     @Override
@@ -27,13 +27,7 @@ public class CoreTestCase extends TestCase {
         super.setUp();
 
         DesiredCapabilities capabilities = this.getCapabilitiesByPlatformEnv();
-//        String platform = System.getenv("PLATFORM");
-        String platform = "android";
-        if (platform.equals(PLATFORM_ANDROID)) {
-            AndroidDriver driver = new AndroidDriver(new URL(appiumURL), capabilities);
-        } else if (platform.equals(PLATFORM_ANDROID)) {
-            IOSDriver driver = new IOSDriver(new URL(appiumURL), capabilities);
-        }
+        driver = setDriverByPlatformEnv(capabilities);
 //        driver = new AndroidDriver(new URL(appiumURL), capabilities);
         this.rotateScreenPortrait();
     }
@@ -89,14 +83,17 @@ public class CoreTestCase extends TestCase {
 //        String platform = System.getenv("PLATFORM");
 //        заглушка, потому что ни хрена не понятно, где ставить default environment variables
         String platform = "android";
-        AndroidDriver driver1 = new AndroidDriver(new URL(appiumURL), capabilities);
-        IOSDriver driver2 = new IOSDriver(new URL(appiumURL), capabilities);
+
+        AppiumDriver driver = new AppiumDriver(new URL(appiumURL), capabilities);
+
         if (platform.equals(PLATFORM_ANDROID)) {
-            return driver1;
+             driver = new AndroidDriver(new URL(appiumURL), capabilities);
         } else if (platform.equals(PLATFORM_IOS)) {
-            return driver2;
+             driver = new IOSDriver(new URL(appiumURL), capabilities);
         } else {
             throw new Exception("can't get run platform from env variable. Platform value = " + platform);
         }
+        System.out.println(driver);
+        return driver;
     }
 }
