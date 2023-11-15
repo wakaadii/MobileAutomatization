@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 public class ArticlePageObject extends MainPageObject{
 
     private static final String
-        TITLIE_ID = "pcs-edit-section-title-description",
+        TITLIE_XPATH = "//*[@resource-id = 'pcs-edit-section-title-description']",
         FOOTER_ELEMENT_XPATH = "//android.view.View[@content-desc='View article in browser']",
         SAVE_BUTTON_ID = "org.wikipedia:id/page_save",
         ADD_TO_LIST_BUTTON_ID = "org.wikipedia:id/snackbar_action",
@@ -21,7 +21,7 @@ public class ArticlePageObject extends MainPageObject{
     public ArticlePageObject(AppiumDriver driver) { super(driver); }
 
     public WebElement waitForTitleElement() {
-        return this.waitForElementPresents(By.id(TITLIE_ID), "Can't find article title");
+        return this.waitForElementPresents(By.xpath(TITLIE_XPATH), "Can't find article title");
     }
 
     public String getArticleTitle () {
@@ -102,7 +102,7 @@ public class ArticlePageObject extends MainPageObject{
     }
 
     public void assertElementPresent() {
-        Assert.assertTrue(driver.findElement(By.id(TITLIE_ID)).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.id(TITLIE_XPATH)).isDisplayed());
     }
 
 }

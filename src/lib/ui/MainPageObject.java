@@ -77,8 +77,9 @@ public class MainPageObject {
         int x = size.width / 2;
         int start_y = (int) (size.height * 0.8);
         int end_y = (int) (size.height * 0.2);
+        System.out.println(x + " " + start_y + " " + " " +end_y);
         action
-                .press(PointOption.point(x,start_y))
+                .press(PointOption.point(x, start_y))
                 .waitAction(WaitOptions.waitOptions(Duration.ofMillis(timeOfSwipe)))
                 .moveTo(PointOption.point(x, end_y))
                 .release()

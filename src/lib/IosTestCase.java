@@ -12,7 +12,7 @@ import java.time.Duration;
 public class IosTestCase extends TestCase {
 
     protected IOSDriver driver;
-    private static String appiumURL = "http://127.0.0.1:4723/wd/hub";
+    private static String appiumURL = "http://127.0.0.1:4723/";
 
     @Override
     protected void setUp() throws Exception{

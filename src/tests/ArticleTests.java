@@ -39,7 +39,8 @@ public class ArticleTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Appium");
         SearchPageObject.clickByArticleWithSubstring("Appium");
         ArticlePageObject.waitForTitleElement();
-        ArticlePageObject.swipeToFooter();
+        ArticlePageObject.swipeUp(200);
+ //       ArticlePageObject.swipeToFooter();
 
     }
 }
