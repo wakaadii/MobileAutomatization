@@ -22,9 +22,4 @@ public class GetStartedTest extends IosTestCase {
         WelcomeScreenPageObject.learnMoreDataLinkIOS();
         WelcomeScreenPageObject.clickGetStartedButtonIOS();
     }
-
-    @Test
-    public void testCheckEnv() {
-        System.out.println(System.getenv("PLATFORM"));
-    }
 }

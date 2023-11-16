@@ -15,11 +15,12 @@ public class CoreTestCase extends TestCase {
 
     private static final String
             PLATFORM_IOS = "ios",
-            PLATFORM_ANDROID = "android";
+            PLATFORM_ANDROID = "android",
+            appiumURL = "http://127.0.0.1:4723/";
 
 
     protected AppiumDriver driver;
-    private static String appiumURL = "http://127.0.0.1:4723/";
+
 
     @Override
     protected void setUp() throws Exception{
@@ -80,8 +81,6 @@ public class CoreTestCase extends TestCase {
     public AppiumDriver setDriverByPlatformEnv (DesiredCapabilities capabilities) throws Exception {
         String platform = System.getenv("PLATFORM");
 
-        AppiumDriver driver = new AppiumDriver(new URL(appiumURL), capabilities);
-
         if (platform.equals(PLATFORM_ANDROID)) {
              driver = new AndroidDriver(new URL(appiumURL), capabilities);
         } else if (platform.equals(PLATFORM_IOS)) {
@@ -89,7 +88,6 @@ public class CoreTestCase extends TestCase {
         } else {
             throw new Exception("can't get run platform from env variable. Platform value = " + platform);
         }
-        System.out.println(driver);
         return driver;
     }
 }

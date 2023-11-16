@@ -1,13 +1,12 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 public class SavedListsPageObject extends MainPageObject{
 
     private static final String
-            NAME_OF_BOOKMARKS_LIST_TPL = "//android.widget.TextView[@text = '{FOLDER_NAME}']",
-            BOOKMARK_TO_DELETE_TPL = "//android.widget.TextView[@text = '{TEXT}']";
+            NAME_OF_BOOKMARKS_LIST_TPL = "xpath://android.widget.TextView[@text = '{FOLDER_NAME}']",
+            BOOKMARK_TO_DELETE_TPL = "xpath://android.widget.TextView[@text = '{TEXT}']";
 
     private static String getFolderXpathByName (String folderName) {
         return NAME_OF_BOOKMARKS_LIST_TPL.replace("{FOLDER_NAME}", folderName);
@@ -22,7 +21,7 @@ public class SavedListsPageObject extends MainPageObject{
     public void openListOfBookmarks(String folderName) {
         String xpath = getFolderXpathByName(folderName);
         this.waitForElementAndClick(
-                By.xpath(xpath),
+                xpath,
                 "can't find bookmarks list " + folderName
         );
     }
@@ -30,7 +29,7 @@ public class SavedListsPageObject extends MainPageObject{
     public void waitForArticleToAppearByTitle(String nameOfBookmark) {
         String xpath = getBookmarkXpath(nameOfBookmark);
         this.waitForElementPresents(
-                By.xpath(xpath),
+                xpath,
                 "Can't find saved Article by title " + nameOfBookmark,
                 15
         );
@@ -39,7 +38,7 @@ public class SavedListsPageObject extends MainPageObject{
     public void waitForArticleToDisappearByTitle(String nameOfBookmark) {
         String xpath = getBookmarkXpath(nameOfBookmark);
         this.waitForElementNotPresent(
-                By.xpath(xpath),
+                xpath,
                 "marked page is in the list",
                 15
         );
@@ -49,7 +48,7 @@ public class SavedListsPageObject extends MainPageObject{
         this.waitForArticleToAppearByTitle(nameOfBookmark);
         String xpath = getBookmarkXpath(nameOfBookmark);
         this.swipeElementToLeft(
-                By.xpath(xpath),
+                xpath,
                 "can't find marked page"
         );
         waitForArticleToDisappearByTitle(nameOfBookmark);

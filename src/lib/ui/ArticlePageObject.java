@@ -2,26 +2,25 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class ArticlePageObject extends MainPageObject{
 
     private static final String
-        TITLIE_XPATH = "//*[@resource-id = 'pcs-edit-section-title-description']",
-        FOOTER_ELEMENT_XPATH = "//android.view.View[@content-desc='View article in browser']",
-        SAVE_BUTTON_ID = "org.wikipedia:id/page_save",
-        ADD_TO_LIST_BUTTON_ID = "org.wikipedia:id/snackbar_action",
-        NAME_OF_BOOKMARKS_LIST_XPATH = "//android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']",
-        CLOSE_BOOKMARKS_POPUP_BUTTON_XPATH = "//*[@text = 'OK']",
-        CLOSE_ARTICLE_BUTTON_XPATH = "//android.widget.ImageButton[@content-desc='Navigate up']",
-        SAVED_LISTS_OF_BOOKMARKS_ID = "org.wikipedia:id/nav_tab_reading_lists",
-        NAME_OF_BOOKMARKS_LIST_XPATH_TPL = "//android.widget.TextView[@text = '{TEXT}']";
+        TITLIE_XPATH = "xpath://*[@resource-id = 'pcs-edit-section-title-description']",
+        FOOTER_ELEMENT_XPATH = "xpath://android.view.View[@content-desc='View article in browser']",
+        SAVE_BUTTON_ID = "id:org.wikipedia:id/page_save",
+        ADD_TO_LIST_BUTTON_ID = "id:org.wikipedia:id/snackbar_action",
+        NAME_OF_BOOKMARKS_LIST_XPATH = "xpath://android.widget.EditText[@resource-id = 'org.wikipedia:id/text_input' and @text = 'Name of this list']",
+        CLOSE_BOOKMARKS_POPUP_BUTTON_XPATH = "xpath://*[@text = 'OK']",
+        CLOSE_ARTICLE_BUTTON_XPATH = "xpath://android.widget.ImageButton[@content-desc='Navigate up']",
+        SAVED_LISTS_OF_BOOKMARKS_ID = "id:org.wikipedia:id/nav_tab_reading_lists",
+        NAME_OF_BOOKMARKS_LIST_XPATH_TPL = "xpath://android.widget.TextView[@text = '{TEXT}']";
 
     public ArticlePageObject(AppiumDriver driver) { super(driver); }
 
     public WebElement waitForTitleElement() {
-        return this.waitForElementPresents(By.xpath(TITLIE_XPATH), "Can't find article title");
+        return this.waitForElementPresents(TITLIE_XPATH, "Can't find article title");
     }
 
     public String getArticleTitle () {
@@ -30,34 +29,34 @@ public class ArticlePageObject extends MainPageObject{
     }
 
     public void swipeToFooter() {
-        this.swipeUpToElement(By.xpath(FOOTER_ELEMENT_XPATH), "can't find the end of article", 30);
+        this.swipeUpToElement(FOOTER_ELEMENT_XPATH, "can't find the end of article", 30);
     }
 
     public void addArticleToNewList(String nameOfFolder) {
 
         this.waitForElementAndClick(
-                By.id(SAVE_BUTTON_ID),
+                SAVE_BUTTON_ID,
                 "Can't find 'save' button"
         );
 
         this.waitForElementAndClick(
-                By.id(ADD_TO_LIST_BUTTON_ID),
+                ADD_TO_LIST_BUTTON_ID,
                 "can't add to bookmarks",
                 10
         );
 
         this.waitForElementAndClick(
-                By.xpath(NAME_OF_BOOKMARKS_LIST_XPATH),
+                NAME_OF_BOOKMARKS_LIST_XPATH,
                 "can't find list's add");
 
         this.waitForElementAndSend(
-                By.xpath(NAME_OF_BOOKMARKS_LIST_XPATH),
+                NAME_OF_BOOKMARKS_LIST_XPATH,
                 nameOfFolder,
                 "can't send name for list of bookmarks"
         );
 
         this.waitForElementAndClick(
-                By.xpath(CLOSE_BOOKMARKS_POPUP_BUTTON_XPATH),
+                CLOSE_BOOKMARKS_POPUP_BUTTON_XPATH,
                 "can't create list of bookmarks"
         );
     }
@@ -71,38 +70,38 @@ public class ArticlePageObject extends MainPageObject{
         String folderXpath = getNameOfBookmarksListXpathByName(folderName);
 
         this.waitForElementAndClick(
-                By.id(SAVE_BUTTON_ID),
+                SAVE_BUTTON_ID,
                 "Can't find 'save' button"
         );
 
         this.waitForElementAndClick(
-                By.id(ADD_TO_LIST_BUTTON_ID),
+                ADD_TO_LIST_BUTTON_ID,
                 "can't add to bookmarks",
                 10
         );
 
         this.waitForElementAndClick(
-                By.xpath(folderXpath),
+                folderXpath,
                 "can't find list's add");
 
     }
 
     public void closePage() {
         this.waitForElementAndClick(
-                By.xpath(CLOSE_ARTICLE_BUTTON_XPATH),
+                CLOSE_ARTICLE_BUTTON_XPATH,
                 "can't find <- arrow on page"
         );
     }
 
     public void openSavedLists () {
         this.waitForElementAndClick(
-                By.id(SAVED_LISTS_OF_BOOKMARKS_ID),
+                SAVED_LISTS_OF_BOOKMARKS_ID,
                 "Can't find saved bookmarks button"
         );
     }
 
     public void assertElementPresent() {
-        Assert.assertTrue(driver.findElement(By.id(TITLIE_XPATH)).isDisplayed());
+        Assert.assertTrue(driver.findElement(this.getLocatorByString(TITLIE_XPATH)).isDisplayed());
     }
 
 }
