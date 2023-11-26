@@ -2,17 +2,15 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
-import lib.ui.WelcomeScreenPageObject;
+import lib.ui.factory.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
     @Test
     public void testSearch() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Java (programming language)");
@@ -21,10 +19,8 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testCancelSearch() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForCancelButtonToAppear();
@@ -37,11 +33,9 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testAmounOfNotEmptySearch() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         String searchLine = "Linkin park discography";
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.searchResultIsNotEmpty();
@@ -50,11 +44,9 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testAmounOfEmptySearch() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         String searchLine = "82drjv";
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.noSearchResult();

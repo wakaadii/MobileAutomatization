@@ -2,7 +2,7 @@ package homeworkTests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
-import lib.ui.WelcomeScreenPageObject;
+import lib.ui.factory.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
@@ -10,10 +10,8 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testComparisonTextOfElement() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.waitForSearchResult("Java (programming language)");
@@ -23,11 +21,9 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testCanceledSearch() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         String searchLine = "Java";
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.searchResultIsNotEmpty();
@@ -38,11 +34,9 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testCheckWord() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         String searchLine = "Java";
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.waitForSearchResult("Object-oriented programming language");

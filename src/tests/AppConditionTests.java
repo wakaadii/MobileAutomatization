@@ -3,19 +3,18 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
-import lib.ui.WelcomeScreenPageObject;
+import lib.ui.factory.ArticlePageObjectFactory;
+import lib.ui.factory.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class AppConditionTests extends CoreTestCase {
     @Test
     public void testRotationOfScreenSearchResults() {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         String searchLine = "Java";
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
@@ -42,12 +41,10 @@ public class AppConditionTests extends CoreTestCase {
     @Test
     public void testSearchResultsInBackground () {
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         String searchLine = "Java";
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");

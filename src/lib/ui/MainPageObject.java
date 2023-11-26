@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static java.time.Duration.ofMillis;
+
 public class MainPageObject {
     protected AppiumDriver driver;
 
@@ -107,7 +109,7 @@ public class MainPageObject {
         swipe.addAction(finger.createPointerDown(0));
 
         //Палец двигается к конечной точке
-        swipe.addAction(finger.createPointerMove(Duration.ofMillis(timeInMills),
+        swipe.addAction(finger.createPointerMove(ofMillis(timeInMills),
                 PointerInput.Origin.viewport(),centerX,endY));
 
         //Убираем палец с экрана
@@ -136,6 +138,24 @@ public class MainPageObject {
 
     }
 
+    public void swipeUpTillElementAppear(String locator, String errorMessage, int maxSwipes) {
+        int alreadySwiped = 0;
+        while (!isElementLocatedOnTheScreen(locator)) {
+            if (alreadySwiped > maxSwipes){
+                Assert.assertTrue(errorMessage, this.isElementLocatedOnTheScreen(locator));
+            }
+            swipeUpQuick();
+            ++alreadySwiped;
+        }
+        swipeUpQuick();
+    }
+
+    public boolean isElementLocatedOnTheScreen(String locator) {
+        int elementLocationByY = this.waitForElementPresents(locator, "can't find element by locator " + locator).getLocation().getY();
+        int screenSizeByY = driver.manage().window().getSize().getHeight();
+        return elementLocationByY < screenSizeByY;
+    }
+
 //    public void swipeElementLeft(String locator, String errorMessage) {
 //        WebElement element = waitForElementPresents(
 //                locator,
@@ -150,7 +170,7 @@ public class MainPageObject {
 //        TouchAction action = new TouchAction(driver);
 //        action
 //                .press(PointOption.point(rightX - 10, middleY))
-//                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
+//                .waitAction(waitOptions(ofMillis(300)))
 //                .moveTo(PointOption.point(leftX + 10, middleY))
 //                .release()
 //                .perform();
@@ -218,7 +238,8 @@ public class MainPageObject {
             return By.xpath(locator);
         } else if (byType.equals("id")) {
             return By.id(locator);
-        }else throw new IllegalArgumentException("Can't get type of locator. Locator - " + locatorWithType);
+        }else if (byType.equals("class")) {
+            return By.className(locator);
+        } else throw new IllegalArgumentException("Can't get type of locator. Locator - " + locatorWithType);
     }
-
 }

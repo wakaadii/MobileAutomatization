@@ -1,18 +1,24 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.junit.Assert;
 
-public class SearchPageObject extends MainPageObject {
+abstract public class SearchPageObject extends MainPageObject {
 
-    private static final String
-            SEARCH_INIT_ELEMENT = "xpath://*[@text='Search Wikipedia']",
-            SEARCH_INPUT = "xpath://*[@text='Search Wikipedia']",
-            SEARCH_CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn",
-            SEARCH_FIELD = "id:org.wikipedia:id/search_src_text",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']//*[@text='{SUBSTRING}']",
-            SEARCH_RESULT_LOCATOR_XPATH = "xpath://*[@resource-id = 'org.wikipedia:id/search_results_list']/{SUBSTRING}",
-            SEARCH_RESULTS_LIST_ID = "xpath://*[@resource-id = 'org.wikipedia:id/search_results_list']//*[@class='android.view.ViewGroup']";
+    protected static String
+            SEARCH_INIT_ELEMENT,
+            SEARCH_INPUT,
+            SEARCH_CANCEL_BUTTON,
+            SEARCH_FIELD,
+            SEARCH_RESULT_BY_SUBSTRING_TPL,
+            SEARCH_RESULT_LOCATOR_XPATH,
+            SEARCH_RESULTS_LIST_ID,
+            NO_RESULTS_MESSAGE;
+
+    public SearchPageObject(AppiumDriver driver) {
+        super(driver);
+    }
 
     /* template methods*/
     private static String getResultSearchElement(String substring){
@@ -24,9 +30,7 @@ public class SearchPageObject extends MainPageObject {
     }
     /* template methods*/
 
-    public SearchPageObject(AppiumDriver driver) {
-        super(driver);
-    }
+
 
     public void initSearchInput() {
         this.waitForElementPresents(SEARCH_INIT_ELEMENT, "can't find search bar and click");
@@ -34,7 +38,7 @@ public class SearchPageObject extends MainPageObject {
     }
 
     public void typeSearchLine(String searchLine) {
-        this.waitForElementAndSend(SEARCH_INPUT, searchLine, "Can't find and type Durationo search input");
+        this.waitForElementAndSend(SEARCH_INPUT, searchLine, "Can't find and type Duration search input");
     }
 
     public void waitForSearchResult(String substring) {
@@ -60,11 +64,14 @@ public class SearchPageObject extends MainPageObject {
 
     public void clickByArticleWithSubstring(String substring) {
         String searchResultXpath = getResultSearchElement(substring);
-        this.waitForElementAndClick(searchResultXpath, "can't click result with substring text'" + substring + "'");
+        this.waitForElementAndClick(searchResultXpath, "can't click result with substring text'" + substring + "'", 15);
     }
 
     public int countNumberOfLines() {
-        String countElementsLocator = getSearchResultLocator( "android.view.ViewGroup");
+        String countElementsLocator = SEARCH_RESULT_LOCATOR_XPATH;
+        if (Platform.getInstance().isAndroid()) {
+            countElementsLocator = getSearchResultLocator("android.view.ViewGroup");
+        }
         this.waitForElementPresents(
                 countElementsLocator,
                 "incorrect search locator " + countElementsLocator
@@ -82,7 +89,14 @@ public class SearchPageObject extends MainPageObject {
     }
 
     public void noSearchResult() {
-        Assert.assertTrue("Some results are founded", ((countNumberOfLines() == 1) & getTextOfLine(0).equals("No results")));
+        if (Platform.getInstance().isAndroid()) {
+            Assert.assertTrue("Some results are founded", ((countNumberOfLines() == 1) & getTextOfLine(0).equals("No results")));
+        } else {
+            Assert.assertTrue("Some results are founded",
+                                (waitForElementPresents(NO_RESULTS_MESSAGE, "can't find no results message")
+                                .getAttribute("value")
+                                .equals("No results found")));
+        }
     }
     public void searchResultIsEmpty() {
         waitForElementNotPresent(SEARCH_RESULTS_LIST_ID, "Element is presented", 15);

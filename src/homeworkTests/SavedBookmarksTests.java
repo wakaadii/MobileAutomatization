@@ -4,26 +4,25 @@ import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SavedListsPageObject;
 import lib.ui.SearchPageObject;
-import lib.ui.WelcomeScreenPageObject;
+import lib.ui.factory.ArticlePageObjectFactory;
+import lib.ui.factory.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SavedBookmarksTests extends CoreTestCase {
 
     //ex5
+    private static final String searchLine = "java",
+            folderName = "first list",
+            textFirstSavedPage = "Java (programming language)",
+            textSecondSavedPage = "JavaScript";
     @Test
-    public void testSaveAndDeleteBookmarks(){
+        public void testSaveAndDeleteBookmarks(){
 
-        WelcomeScreenPageObject ScipWelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         SavedListsPageObject SavedListsPageObject = new SavedListsPageObject(driver);
-        String searchLine = "java";
-        String folderName = "first list";
-        String textFirstSavedPage = "Java (programming language)";
-        String textSecondSavedPage = "JavaScript";
 
 
-        ScipWelcomeScreenPageObject.scipWelcomeScreen();
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.clickByArticleWithSubstring(textFirstSavedPage);

@@ -1,14 +1,19 @@
-package tests.ios;
+package tests;
 
-import lib.IosTestCase;
+import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.WelcomeScreenPageObject;
+import lib.ui.factory.WelcomeScreenPageObjectFactory;
 import org.junit.Test;
 
-public class GetStartedTest extends IosTestCase {
+public class GetStartedTest extends CoreTestCase {
 
     @Test
     public void testPassThroughWelcome() {
-        WelcomeScreenPageObject WelcomeScreenPageObject = new WelcomeScreenPageObject(driver);
+        if (Platform.getInstance().isAndroid()) {
+            return;
+        }
+        WelcomeScreenPageObject WelcomeScreenPageObject = WelcomeScreenPageObjectFactory.get(driver);
 
         WelcomeScreenPageObject.learnMoreWikiLinkIOS();
         WelcomeScreenPageObject.nextWelcomeScreenIOS();
