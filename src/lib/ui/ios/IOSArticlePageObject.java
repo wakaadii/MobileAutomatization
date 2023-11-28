@@ -6,7 +6,7 @@ import lib.ui.ArticlePageObject;
 public class IOSArticlePageObject extends ArticlePageObject {
 
     static {
-//        TITLE_TPL = "xpath://*[@value = 'Object-oriented programming language']";
+        TITLE = "xpath://*[@value = 'Object-oriented programming language']";
         TITLE_TPL = "xpath://*[@value = '{TEXT}']";
         FOOTER_ELEMENT = "id:View article in browser";
         SAVE_BUTTON = "id:Save for later";
