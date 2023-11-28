@@ -8,7 +8,8 @@ import org.openqa.selenium.WebElement;
 abstract public class ArticlePageObject extends MainPageObject{
 
     protected static String
-            TITLE,
+        TITLE,
+        TITLE_TPL,
         FOOTER_ELEMENT,
         SAVE_BUTTON,
         ADD_TO_LIST_BUTTON,
@@ -22,16 +23,21 @@ abstract public class ArticlePageObject extends MainPageObject{
     public ArticlePageObject(AppiumDriver driver) { super(driver); }
 
     public WebElement waitForTitleElement() {
-        return this.waitForElementPresents(TITLE, "Can't find article title");
+            return this.waitForElementPresents(TITLE, "Can't find article title");
+    }
+
+    public WebElement waitForTitleElement(String titleName) {
+        return this.waitForElementPresents(getNameOfTitle(titleName), "Can't find article title");
     }
 
     public String getArticleTitle () {
         WebElement title_element = waitForTitleElement();
-        if (Platform.getInstance().isAndroid()) {
-            return title_element.getAttribute("contentDescription");
-        } else {
-            return title_element.getAttribute("name");
-        }
+        return title_element.getAttribute("contentDescription");
+    }
+
+    public String getArticleTitle (String titleName){
+        WebElement title_element = waitForTitleElement(titleName);
+        return title_element.getAttribute("name");
     }
 
     public void swipeToFooter() {
@@ -78,7 +84,9 @@ abstract public class ArticlePageObject extends MainPageObject{
         );
     }
 
-
+    private static String getNameOfTitle (String titleName) {
+        return TITLE_TPL.replace("{TEXT}", titleName);
+    }
     private static String getNameOfBookmarksListXpathByName (String folderName) {
         return NAME_OF_BOOKMARKS_LIST_TPL.replace("{TEXT}", folderName);
     }

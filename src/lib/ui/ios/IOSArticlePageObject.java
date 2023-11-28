@@ -6,12 +6,13 @@ import lib.ui.ArticlePageObject;
 public class IOSArticlePageObject extends ArticlePageObject {
 
     static {
-        TITLE = "id:Java (programming language)";
+//        TITLE_TPL = "xpath://*[@value = 'Object-oriented programming language']";
+        TITLE_TPL = "xpath://*[@value = '{TEXT}']";
         FOOTER_ELEMENT = "id:View article in browser";
         SAVE_BUTTON = "id:Save for later";
         CLOSE_ARTICLE_BUTTON = "id:Search";
-        SAVED_LISTS_OF_BOOKMARKS = "id:saved";
-        CLOSE_SYNC_POPUP = "xpath://XCUIElementTypeButton[@name='Close']";
+        SAVED_LISTS_OF_BOOKMARKS = "xpath://XCUIElementTypeButton[@name='Saved']";
+
     }
     public IOSArticlePageObject(AppiumDriver driver) {
         super(driver);

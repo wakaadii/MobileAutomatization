@@ -1,20 +1,20 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
-import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import static java.time.Duration.ofMillis;
@@ -156,33 +156,52 @@ public class MainPageObject {
         return elementLocationByY < screenSizeByY;
     }
 
-//    public void swipeElementLeft(String locator, String errorMessage) {
-//        WebElement element = waitForElementPresents(
-//                locator,
-//                errorMessage,
-//                10);
-//        int leftX = element.getLocation().getX();
-//        int rightX = leftX + element.getSize().getWidth();
-//        int upperY = element.getLocation().getY();
-//        int lowerY = upperY + element.getSize().getHeight();
-//        int middleY = (upperY + lowerY)/2;
-//
-//        TouchAction action = new TouchAction(driver);
-//        action
-//                .press(PointOption.point(rightX - 10, middleY))
-//                .waitAction(waitOptions(ofMillis(300)))
-//                .moveTo(PointOption.point(leftX + 10, middleY))
-//                .release()
-//                .perform();
-//    }
-
-    protected void swipeElementToLeft(String locator, String error_message) {
-        RemoteWebElement carousel = (RemoteWebElement) waitForElementPresents(
+    public void swipeElementToLeft(String locator, String errorMessage) {
+        WebElement element = waitForElementPresents(
                 locator,
-                error_message,
+                errorMessage,
                 10);
-        driver.executeScript("gesture: swipe", Map.of("elementId", carousel.getId(), "percentage", 50, "direction", "left"));
+        int leftX = element.getLocation().getX();
+        int rightX = leftX + element.getSize().getWidth();
+        int upperY = element.getLocation().getY();
+        int lowerY = upperY + element.getSize().getHeight();
+        int middleY = (upperY + lowerY)/2;
+
+        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH,"finger");
+        Sequence swipe = new Sequence(finger,1);
+        //Двигаем палец на начальную позицию
+        swipe.addAction(finger.createPointerMove(Duration.ofSeconds(0),
+                PointerInput.Origin.viewport(),rightX -10,(int)middleY))
+        //Палец прикасается к экрану
+            .addAction(finger.createPointerDown(0))
+        //Палец двигается к конечной точке
+            .addAction(finger.createPointerMove(Duration.ofMillis(700),
+                PointerInput.Origin.viewport(),leftX + 10,(int)middleY))
+        //Убираем палец с экрана
+            .addAction(finger.createPointerUp(0));
+        driver.perform(Arrays.asList(swipe));
     }
+
+    public void clickElementToTheRightUpCorner(String locator, String errorMessage) {
+        WebElement element = this.waitForElementPresents(locator, errorMessage);
+        int upperY = element.getLocation().getY();
+        int lowerY = upperY + element.getSize().getHeight();
+
+        int pointToClickY = (upperY + lowerY)/2;
+        int pointToClickX = element.getLocation().getX() + element.getSize().getWidth() - 3;
+
+        TouchAction action = new TouchAction(driver);
+        action.tap(PointOption.point(pointToClickX,pointToClickY)).perform();
+
+    }
+
+//    protected void swipeElementToLeft(String locator, String error_message) {
+//        RemoteWebElement carousel = (RemoteWebElement) waitForElementPresents(
+//                locator,
+//                error_message,
+//                10);
+//        driver.executeScript("gesture: swipe", Map.of("elementId", carousel.getId(), "percentage", 50, "direction", "left"));
+//    }
 
     public int getAmountOfElements(String locator)    {
         List elementsCount = driver.findElements(getLocatorByString(locator));
@@ -197,7 +216,7 @@ public class MainPageObject {
         }
     }
 
-    public void assertNoSearchResults(String locator, By byGetText, String text, String errorMessage) {
+    public void assertNoSearchResults(String locator, By byGetText, String errorMessage) {
         int amountOfElements = getAmountOfElements(locator);
         String textOfElement = driver.findElement(byGetText).getText();
         if (!textOfElement.equals("No results") & (amountOfElements == 1)){

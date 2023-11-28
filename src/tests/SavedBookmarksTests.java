@@ -6,6 +6,7 @@ import lib.ui.ArticlePageObject;
 import lib.ui.SavedListsPageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.factory.ArticlePageObjectFactory;
+import lib.ui.factory.SavedListsPageObjectFactory;
 import lib.ui.factory.SearchPageObjectFactory;
 import org.junit.Test;
 
@@ -17,14 +18,14 @@ public class SavedBookmarksTests extends CoreTestCase {
 
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
-        SavedListsPageObject SavedListsPageObject = new SavedListsPageObject(driver);
+        SavedListsPageObject SavedListsPageObject = SavedListsPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
-        ArticlePageObject.waitForTitleElement();
-        String ArticleTitle = ArticlePageObject.getArticleTitle();
         if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.waitForTitleElement();
+            String ArticleTitle = ArticlePageObject.getArticleTitle();
             ArticlePageObject.addArticleToNewList(folderName);
             ArticlePageObject.closePage();
             ArticlePageObject.closePage();
@@ -32,6 +33,8 @@ public class SavedBookmarksTests extends CoreTestCase {
             SavedListsPageObject.openListOfBookmarks(folderName);
             SavedListsPageObject.deleteBookmarkFromList(ArticleTitle);
         } else {
+            ArticlePageObject.waitForTitleElement("Java (programming language)");
+            String ArticleTitle = ArticlePageObject.getArticleTitle("Java (programming language)");
             ArticlePageObject.saveArticleToDefaultList();
             ArticlePageObject.closePage();
             SearchPageObject.clickCancelSearch();
