@@ -28,8 +28,8 @@ public class SavedBookmarksTests extends CoreTestCase {
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.clickByArticleWithSubstring(textFirstSavedPage);
-        String FirstArticleTitle = "";
-        String SecondArticleTitle = "";
+        String FirstArticleTitle = "",
+                SecondArticleTitle = "";
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.waitForTitleElement();
             FirstArticleTitle = ArticlePageObject.getArticleTitle();
@@ -59,6 +59,48 @@ public class SavedBookmarksTests extends CoreTestCase {
             ArticlePageObject.openSavedLists();
             SavedListsPageObject.deleteBookmarkFromList(FirstArticleTitle);
             SavedListsPageObject.waitForArticleToAppearByTitle(SecondArticleTitle);
+        }
+    }
+
+    //ex12
+
+    private static final String textThirdSavedPage = "Java";
+    @Test
+    public void testSaveAndDeleteThreeBookmarks(){
+
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
+        SavedListsPageObject SavedListsPageObject = SavedListsPageObjectFactory.get(driver);
+
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(searchLine);
+        SearchPageObject.clickByArticleWithSubstring(textFirstSavedPage);
+        String FirstArticleTitle,
+                SecondArticleTitle,
+                ThirdArticleTitle;
+        if (Platform.getInstance().isAndroid()) {
+            return;
+        } else {
+            ArticlePageObject.waitForTitleElement(textFirstSavedPage);
+            FirstArticleTitle = ArticlePageObject.getArticleTitle(textFirstSavedPage);
+            ArticlePageObject.saveArticleToDefaultList();
+            ArticlePageObject.closePage();
+            SearchPageObject.clickByArticleWithSubstring(textSecondSavedPage);
+            ArticlePageObject.waitForTitleElement(textSecondSavedPage);
+            SecondArticleTitle = ArticlePageObject.getArticleTitle(textSecondSavedPage);
+            ArticlePageObject.saveArticleToDefaultList();
+            ArticlePageObject.closePage();
+            SearchPageObject.clickByArticleWithSubstring(textThirdSavedPage);
+            ArticlePageObject.waitForTitleElement(textThirdSavedPage);
+            ThirdArticleTitle = ArticlePageObject.getArticleTitle(textThirdSavedPage);
+            ArticlePageObject.saveArticleToDefaultList();
+            ArticlePageObject.closePage();
+            SearchPageObject.clickCancelSearch();
+            ArticlePageObject.openSavedLists();
+            SavedListsPageObject.deleteBookmarkFromList(FirstArticleTitle);
+            SavedListsPageObject.waitForArticleToAppearByTitle(SecondArticleTitle);
+            SavedListsPageObject.waitForArticleToAppearByTitle(ThirdArticleTitle);
         }
     }
 
