@@ -17,7 +17,6 @@ abstract public class ArticlePageObject extends MainPageObject{
         CLOSE_BOOKMARKS_POPUP_BUTTON,
         CLOSE_ARTICLE_BUTTON,
         SAVED_LISTS_OF_BOOKMARKS,
-        CLOSE_SYNC_POPUP,
         NAME_OF_BOOKMARKS_LIST_TPL;
 
     public ArticlePageObject(AppiumDriver driver) { super(driver); }
@@ -32,7 +31,11 @@ abstract public class ArticlePageObject extends MainPageObject{
 
     public String getArticleTitle () {
         WebElement title_element = waitForTitleElement();
-        return title_element.getAttribute("contentDescription");
+        if (Platform.getInstance().isAndroid()) {
+            return title_element.getAttribute("contentDescription");
+        } else {
+            return title_element.getAttribute("name");
+        }
     }
 
     public String getArticleTitle (String titleName){
